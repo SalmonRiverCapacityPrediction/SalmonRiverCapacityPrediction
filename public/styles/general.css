@@ -1,0 +1,154 @@
+/* Define variables: */
+:root {
+    --background-color: rgba(33, 33, 33, 1);
+    --card-color: rgba(245, 245, 245, 1);
+    --light-font-color: rgba(236, 239, 241, 1);
+    --dark-font-color: rgba(66 , 66, 66, 1)
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../assets/fonts/Roboto/Roboto-Regular.ttf");
+}
+
+/* Miscs: */
+
+body {
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    margin: 0;
+    padding: 0;
+    cursor: default;
+    transition: 0.3s;
+    /*overflow: hidden;*/
+}
+
+a {
+    text-decoration: none;
+    color: var(--light-font-color);
+}
+
+.background {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    transition: 0.3s;
+}
+
+.cards {
+    border-radius: 2px;
+    background-color: var(--card-color);
+    box-shadow: 0.055em 0.055em 0.1em 0.02em rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+}
+
+.buttons {
+    transition: 0.3s;
+    box-shadow: 0.055em 0.055em 0.1em 0.02em rgba(0, 0, 0, 0.5);
+}
+
+.round {
+    border-radius: 50%;
+}
+
+.buttons:hover {
+    cursor: pointer;
+    box-shadow: 0.08em 0.08em 0.3em 0.07em rgba(0, 0, 0, 0.5);
+    /* box-shadow: 0.1em 0.1em 0.3em 0.01em rgba(0, 0, 0, 0.5), 0px 0px 0px 0.35em rgba(255, 255, 255, 0.7) inset; */
+}
+
+.buttonInfo {
+    opacity: 0;
+    display: inline-block;
+    position: relative;
+    height: 0%;
+    width: 0%;
+    left: 110%;
+    background-color: var(--card-color);
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    transition: 0.2s;
+    z-index: 20;
+    overflow: hidden;
+}
+
+.buttonInfo p {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.buttons:hover .buttonInfo {
+    height: 40px;
+    width: auto;
+    overflow: none;
+    opacity: 1;
+}
+
+::-webkit-scrollbar {
+    width: 0.4em;
+    background: rgba(69,90,100 ,1);
+}
+
+::-webkit-scrollbar, ::-webkit-scrollbar-thumb {
+    overflow:visible;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(207,216,220 ,0.8);
+}
+
+/* Common elements: */
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3em;
+    width: 100vw;
+    background-color: var(--background-color);
+    color: var(--light-font-color);
+    border-radius: 0;
+    transition: 0.3s;
+}
+
+.headerButtons {
+    position: relative;
+    padding: 0 1em;
+    display: inline-block;
+    height: 3em;
+    width: auto;
+    transition: 0.3s;
+}
+
+.headerButtons:hover {
+    background-color: var(--card-color);
+    color: var(--dark-font-color);
+    cursor: pointer;
+}
+
+.headerButtons p {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    height: 3em;
+    font-size: 1em;
+    font-weight: 700;
+    line-height: 3em;
+}
+
+#content {
+    position: absolute;
+    top: 3em;
+    height: calc(100vh - 3em);
+    width: 100vw;
+}
+
+#contentBackground {
+    background-image: url('/assets/images/backgrounds/background.png');
+    background-size: cover;
+}

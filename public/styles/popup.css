@@ -1,0 +1,73 @@
+#popupWrap {
+    position: absolute;
+    top: -100vh;
+    left: 50vw;
+    width: 50vh;
+    height: 80vh;
+    margin: -40vh 0 0 -25vh;
+    box-sizing: border-box;
+    padding: 1vh;
+    background-color: rgba(38,50,56 ,1);
+    color: var(--light-font-color);
+    transition: 300ms;
+}
+
+#popupIconWrap {
+    position: relative;
+    display: inline-block;
+    top: 0;
+    width: 100%;
+    height: 24vh;
+}
+
+#popupIcon {
+    position: relative;
+    width: 22vh;
+    height: 22vh;
+    top: 50%;
+    left: 50%;
+    margin: -11vh 0 0 -11vh;
+    background-image: url(/assets/images/icons/trophy.svg);
+}
+
+#popupMessageWrap {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 24vh;
+    padding: 2vh;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+#popupMessageWrap p {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+#popupButtonsWrap {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 28vh;
+    padding: 2vh;
+    box-sizing: border-box;
+}
+
+.popupButtons {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 11vh;
+    margin: 1vh 0;
+    line-height: 11vh;
+    font-size: 1.5em;
+    font-weight: 700;
+    text-align: center;
+    color: var(--light-font-color);
+    background-color: rgba(2, 119, 189, 1);
+}
