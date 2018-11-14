@@ -16,6 +16,16 @@
                         <span class="card-title">Card Title</span>
                         <p>I am a very simple card. I am good at containing small bits of information.
                         I am convenient because I require little markup to use effectively.</p>
+                        <form action='/stream_results' method='post'>
+                            <div id="form">                                
+                                <input type="text" id='river_name' name="river_name" placeholder="river name">
+                                <input type="text" id='stream_name' name="stream_name" placeholder="stream name">
+                                <input type="text" id='sweep_number' name="sweep_number" placeholder="sweep number">
+                                <input type="text" id='fish_caught' name="fish_caught" placeholder="fish caught per sweep">
+                                <input type="text" id='cumulative_number' name="cumulative_number" placeholder="cumulative number">
+                                <input type="submit" value="Submit" id='submitbutton'>
+                            </div>
+                        </form>
                         </div>
                         <div class="card-action">
                         <a href="#">This is a link</a>
