@@ -1,0 +1,17 @@
+{
+    "riverName": "Fraser River",
+    "branches": {
+        "Branch 1": {
+            "branchName": "Branch 1",
+            "sweeps": [5, 3, 2]
+        },
+        "Branch 2": {
+            "branchName": "Branch 2",
+            "sweeps": [5, 3, 2]
+        },
+        "Branch 3": {
+            "branchName": "Branch 3",
+            "sweeps": [5, 3, 2]
+        }
+    }
+}

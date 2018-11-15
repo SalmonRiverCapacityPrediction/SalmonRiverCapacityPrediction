@@ -10,26 +10,25 @@
         <div id="content">
             <div class="background" id="contentBackground"></div>
             <div class="row">
-                <div class="col s12 m6">
+                {{> riverList}}
+                <div class="col s12 m8">
                     <div class="card blue-grey darken-1">
                         <div class="card-content white-text">
-                        <span class="card-title">Card Title</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                        <form action='/stream_results' method='post'>
-                            <div id="form">                                
-                                <input type="text" id='river_name' name="river_name" placeholder="river name">
-                                <input type="text" id='stream_name' name="stream_name" placeholder="stream name">
-                                <input type="text" id='sweep_number' name="sweep_number" placeholder="sweep number">
-                                <input type="text" id='fish_caught' name="fish_caught" placeholder="fish caught per sweep">
-                                <input type="text" id='cumulative_number' name="cumulative_number" placeholder="cumulative number">
-                                <input type="submit" value="Submit" id='submitbutton'>
+                            <span class="card-title">Card Title</span>
+                                <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                                <form action='/saveRiver' method='post'>
+                                    <div id="form">                                
+                                        <input type="text" id='riverName' name="riverName" placeholder="riverName">
+                                        <input type="text" id='streamName' name="streamName" placeholder="stream name">
+                                        <input type="text" id='fishCaught' name="fishCaught" placeholder="fish caught per sweep">
+                                        <input type="submit" value="Submit" id='submitButton'>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
-                        </div>
                         <div class="card-action">
-                        <a href="#">This is a link</a>
-                        <a href="#">This is a link</a>
+                        <a href="#">Save</a>
+                        <a href="#">Delete</a>
                         </div>
                     </div>
                 </div>
