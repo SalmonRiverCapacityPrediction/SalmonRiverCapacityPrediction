@@ -99,6 +99,20 @@ app.post('/updateBranchData', (request, response) => {
     response.send(200)
 })
 
+app.post('/calculateBranchImpact', (request, response) => {
+    let riverName = decodeURIComponent(request.body.riverName);
+    let branchName = decodeURIComponent(request.body.branchName);
+    let riverList = new rivers.Rivers()
+    console.log(riverName, branchName)
+    riverList.loadFromDirectory('./data').then((result) => {
+        riverList.calculateBranchImpact(riverName, branchName).then((result) => {
+            response.send(JSON.stringify(result))
+        }).catch((error) => {
+            console.log(error)
+        })
+    })
+})
+
 app.post('/saveRiver', (request, response) => {
     var newData = {
             "riverName" : request.body.riverName,
