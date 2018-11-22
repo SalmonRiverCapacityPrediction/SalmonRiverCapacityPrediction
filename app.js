@@ -121,6 +121,7 @@ app.post('/saveRiver', (request, response) => {
     //Convert branches to array
     var newData = {
             "riverName" : request.body.riverName,
+            "riverPopulation": null,
             "branches" : {}
     };
     newData["branches"][request.body.streamName] = {
