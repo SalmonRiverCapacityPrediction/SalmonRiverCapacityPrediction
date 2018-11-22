@@ -1,0 +1,13 @@
+{
+    "riverName": "New",
+    "branches": {
+        "New2": {
+            "branchName": "New2",
+            "sweeps": [
+                5,
+                3,
+                3
+            ]
+        }
+    }
+}

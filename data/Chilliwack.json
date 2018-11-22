@@ -1,0 +1,13 @@
+{
+    "riverName": "Chilliwack",
+    "branches": {
+        "Chill": {
+            "branchName": "Chill",
+            "sweeps": [
+                5,
+                3,
+                3
+            ]
+        }
+    }
+}

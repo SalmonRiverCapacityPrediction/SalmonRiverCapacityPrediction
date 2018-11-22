@@ -45,6 +45,26 @@ class Rivers {
     }
 
     saveRiverToFile(riverName, data) {
+        //Go throught the list of files in directory and check if riverName exists
+        //If yes -> readFile and append new data
+        //IF no ->
+        fs.readdir('./data', (err,result) => {
+            if (err) throw err;
+            else {
+                let fileArr = [];
+                result.forEach(file => {
+                    console.log("FILE: ",file);
+                    if(file==riverName+".json"){
+                        console.log("Match");
+                        let newData = data.branches;
+                        console.log(newData);
+                        loadFromFile(file).then()
+                    }
+                    //fileArr.push(file);
+                });
+            }
+
+        });
         fs.writeFileSync(`./data/${riverName}.json`, JSON.stringify(data, null, 4));
     }
 

@@ -47,8 +47,10 @@ app.get('/calculateN', (request, response) => {
     let riverList = new rivers.Rivers()
     riverList.loadFromDirectory('./data').then((result) => {
         console.log(result)
-        let n = riverList.calculateN('Fraser River', 'Branch 1');
+        let n = riverList.calculateN('Alouette', 'North');
+        //console.log("Calculate population: ", riverList.calculateN2("Alouette","North"));
         response.send(n.toString())
+        do_fetching();
     })
 });
 
@@ -114,11 +116,14 @@ app.post('/calculateBranchImpact', (request, response) => {
 })
 
 app.post('/saveRiver', (request, response) => {
+    //Save data as JSON object. Populate the branches.
+    //Readfile first, add data then.
+    //Convert branches to array
     var newData = {
             "riverName" : request.body.riverName,
             "branches" : {}
     };
-    newData[request.body.streamName] ={
+    newData["branches"][request.body.streamName] = {
         branchName: request.body.streamName,
         "sweeps": [5, 3, 3]
     }
@@ -128,6 +133,7 @@ app.post('/saveRiver', (request, response) => {
         riverList.saveRiverToFile(request.body.riverName, newData)
         response.render('index.hbs')
     })
+    
 });
 
 app.listen(port, () => {

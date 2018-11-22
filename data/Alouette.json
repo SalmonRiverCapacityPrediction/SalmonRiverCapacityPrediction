@@ -1,12 +1,21 @@
 {
     "riverName": "Alouette",
-    "branches": {},
-    "North LS": {
-        "branchName": "North LS",
-        "sweeps": [
-            5,
-            3,
-            3
-        ]
+    "branches": {
+        "North": {
+            "branchName": "North",
+            "sweeps": [
+                5,
+                3,
+                3
+            ]
+        },
+        "South": {
+            "branchName": "North",
+            "sweeps": [
+                5,
+                3,
+                3
+            ]
+        }
     }
 }
