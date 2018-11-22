@@ -97,7 +97,13 @@ app.post('/calculateBranchImpact', (request, response) => {
         }).catch((error) => {
             console.log(error)
         })
+        riverList.calculateImpactByClosingMultipleRivers(riverName).then((result) => {
+        response.send(JSON.stringify(result)).catch((error) => {
+            console.log(error);
+        })
+    });
     })
+
 })
 
 app.post('/saveRiver', (request, response) => {
@@ -106,6 +112,7 @@ app.post('/saveRiver', (request, response) => {
     //Convert branches to array
     var newData = {
             "riverName" : request.body.riverName,
+            "riverPopulation": null,
             "branches" : {}
     };
     newData["branches"][request.body.streamName] = {

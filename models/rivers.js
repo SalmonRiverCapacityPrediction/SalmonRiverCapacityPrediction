@@ -119,6 +119,36 @@ class Rivers {
             }
         })
     }
+
+
+    calculateImpactByClosingMultipleRivers (riverName) {        
+        return new Promise((resolve, reject) => {
+            let cumulativeImpactOnRiver = 0;
+            let cumulativeImpactOnBranches = 0;
+            console.log("calculateImpactByClosingMultipleRivers: ", riverName);
+            if (this.riverList[riverName] == null) {
+                reject ({
+                    "error": "No such river or branch in database"
+                })
+            }        
+
+        let riverBranches = this.riverList[riverName].branches;
+        //console.log("River Branches: ", riverBranches);
+        Object.keys(riverBranches).forEach(branch => {            
+            let branchName = riverBranches[branch].branchName;
+            this.calculateBranchImpact(riverName,branchName).then((result) => {
+                console.log(JSON.stringify(result));
+                cumulativeImpactOnRiver+=result.impactOnRiverPopulation;                              
+                console.log("Cumulative Impact in percents: ", cumulativeImpactOnRiver);
+                cumulativeImpactOnBranches+=result.branchPopulation
+                console.log("Cumulative Impact in fish number: ", cumulativeImpactOnBranches);
+                }).catch((error) => {
+                    console.log(error)
+                })
+            })
+        //console.log("Cumulative Impact: ", cumulativeImpactOnRiver);
+        })
+    }
 }
 
 module.exports = {
