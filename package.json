@@ -13,6 +13,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "hbs": "^4.0.1",
+    "jQuery": "^1.7.4",
     "lodash": "^4.17.11",
     "request": "^2.88.0",
     "require": "^2.4.20"

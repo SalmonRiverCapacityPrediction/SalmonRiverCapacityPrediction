@@ -8,11 +8,9 @@ const express = require('express'),
 const port = process.env.PORT || 8080;
 
 let app = express();
-let currentUser = {
-    "username": '',
-    "userScore": 0,
-    "currentStreak": 0,
-    "highestStreak": 0
+let currentRiver = {
+    "riverName": '',
+    "riverInformation": {}
 };
 
 let currentQuestionList = undefined;
@@ -54,9 +52,39 @@ app.get('/calculateN', (request, response) => {
     })
 });
 
+app.get('/getBranchList', (request, response) => {
+    let riverName = request.query.riverName;
+    let riverList = new rivers.Rivers();
+    riverList.loadFromDirectory('./data').then((result) => {
+        if (riverName in riverList.riverList) {
+            currentRiver = {
+                'riverName': riverName,
+                'riverInformation': riverList.riverList[riverName]
+            }
+            response.send(JSON.stringify(currentRiver))
+        }
+        else response.sendStatus(200)
+    })
+})
+
 app.get('*', function(request, response){
     response.render('404.hbs');
 });
+
+app.post('/getBranchList', (request, response) => {
+    let riverName = request.body.riverName;
+    let riverList = new rivers.Rivers();
+    riverList.loadFromDirectory('./data').then((result) => {
+        if (riverName in riverList.riverList) {
+            currentRiver = {
+                'riverName': riverName,
+                'riverinformation': riverList.riverList[riverName]
+            }
+            response.send(JSON.stringify(currentRiver))
+        }
+        else response.sendStatus(500)
+    })
+})
 
 app.post('/getRiverList', (request, response) => {
     let riverList = new rivers.Rivers()
@@ -64,6 +92,11 @@ app.post('/getRiverList', (request, response) => {
         let displayString = riverList.displayRiverList();
         response.send(displayString)
     })
+})
+
+app.post('/updateBranchData', (request, response) => {
+    console.log(request.body)
+    response.send(200)
 })
 
 app.post('/saveRiver', (request, response) => {
