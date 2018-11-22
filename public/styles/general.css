@@ -34,6 +34,7 @@ a {
     top: 0;
     left: 0;
     transition: 0.3s;
+    z-index: -1
 }
 
 .cards {
@@ -108,9 +109,9 @@ a {
     position: fixed;
     top: 0;
     left: 0;
-    height: 3em;
+    height: 5em;
     width: 100vw;
-    background-color: var(--background-color);
+    /* background-color: var(--background-color); */
     color: var(--light-font-color);
     border-radius: 0;
     transition: 0.3s;
@@ -143,8 +144,8 @@ a {
 
 #content {
     position: absolute;
-    top: 3em;
-    height: calc(100vh - 3em);
+    top: 0;
+    padding-top: 5em;
     width: 100vw;
 }
 

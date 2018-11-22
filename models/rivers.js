@@ -36,8 +36,8 @@ class Rivers {
         let displayString = '';
         Object.keys(this.riverList).forEach(river => {
             displayString += '<div class="card blue-grey darken-1">\n'
-            displayString += '<div class="card-content white-text">\n'
-            displayString += `<span class="card-title"> ${this.riverList[river].riverName} </span>\n`
+            displayString += '<div class="card-content white-text" style="padding: 1em">\n'
+            displayString += `<p class="text-flow" style="font-size: 1.25em"> ${this.riverList[river].riverName} </p>\n`
             displayString += '</div>\n'
             displayString += '</div>\n'
         })
