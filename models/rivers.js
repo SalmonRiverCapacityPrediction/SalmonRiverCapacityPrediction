@@ -96,14 +96,14 @@ class Rivers {
                     "riverName": riverName,
                     "branchName": branchName,
                     "lostBranchPopulation": branchPopulation,
-                    "impactOnRiverPopulation": (impactOnRiverPopulation*100).toPrecision(4) + '%',
+                    "impactOnRiverPopulation": impactOnRiverPopulation*100,
                     "impactOnConnectedBranches": impactOnConnectedBranches
                 });
             }
             for (let i = 0; i < connectedBranches.length; i++) {
                 let connectedBranchPopulation = this.calculateN(riverName, connectedBranches[i]);
                 if (branchPopulation/(branchPopulation + connectedBranchPopulation) < 0.025) {
-                    impactOnConnectedBranches.push(0);
+                    impactOnConnectedBranches[connectedBranches[i]] = 0;
                 } else {
                     impactOnConnectedBranches[connectedBranches[i]] = connectedBranchPopulation*(branchPopulation/(branchPopulation + connectedBranchPopulation));
                 }
@@ -112,7 +112,7 @@ class Rivers {
                         "riverName": riverName,
                         "branchName": branchName,
                         "lostBranchPopulation": branchPopulation,
-                        "impactOnRiverPopulation": (impactOnRiverPopulation*100).toPrecision(4) + '%',
+                        "impactOnRiverPopulation": impactOnRiverPopulation*100,
                         "impactOnConnectedBranches": impactOnConnectedBranches
                     });
                 }
@@ -125,27 +125,33 @@ class Rivers {
         return new Promise((resolve, reject) => {
             let cumulativeImpactOnRiver = 0;
             let cumulativeImpactOnBranches = 0;
-            console.log("calculateImpactByClosingMultipleRivers: ", riverName);
+            // console.log("calculateImpactByClosingMultipleRivers: ", riverName);
             if (this.riverList[riverName] == null) {
                 reject ({
                     "error": "No such river or branch in database"
                 })
             }        
 
-        let riverBranches = this.riverList[riverName].branches;
-        //console.log("River Branches: ", riverBranches);
-        Object.keys(riverBranches).forEach(branch => {            
-            let branchName = riverBranches[branch].branchName;
-            this.calculateBranchImpact(riverName,branchName).then((result) => {
-                console.log(JSON.stringify(result));
-                cumulativeImpactOnRiver+=result.impactOnRiverPopulation;                              
-                console.log("Cumulative Impact in percents: ", cumulativeImpactOnRiver);
-                cumulativeImpactOnBranches+=result.branchPopulation
-                console.log("Cumulative Impact in fish number: ", cumulativeImpactOnBranches);
-                }).catch((error) => {
-                    console.log(error)
+            let riverBranches = this.riverList[riverName].branches;
+            //console.log("River Branches: ", riverBranches);
+            Object.keys(riverBranches).forEach(branch => {            
+                let branchName = riverBranches[branch].branchName;
+                this.calculateBranchImpact(riverName,branchName).then((result) => {
+                    // console.log(JSON.stringify(result));
+                    cumulativeImpactOnRiver+=result.impactOnRiverPopulation;                              
+                    // console.log("Cumulative Impact in percents: ", cumulativeImpactOnRiver);
+                    cumulativeImpactOnBranches+=result.lostBranchPopulation
+                    // console.log("Cumulative Impact in fish number: ", cumulativeImpactOnBranches);
+                    if (Object.keys(riverBranches).indexOf(branch) == (Object.keys(riverBranches).length - 1)) {
+                        resolve({
+                            'cumulativeImpactOnRiver': cumulativeImpactOnRiver,
+                            'cumulativeImpactOnBranches': cumulativeImpactOnBranches
+                        })
+                    }
+                    }).catch((error) => {
+                        console.log(error)
+                    })
                 })
-            })
         //console.log("Cumulative Impact: ", cumulativeImpactOnRiver);
         })
     }
