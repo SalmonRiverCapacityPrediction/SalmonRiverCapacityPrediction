@@ -50,8 +50,9 @@ let getBranchList = (riverName) => {
 
                     displayString += `\t\t\t<div class="card-action">\n`;
                         displayString += `\t\t\t\t<a class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add a Sweep</a>\n`;
-                        displayString += `\t\t\t\t<a class="waves-effect waves-light btn"  onClick="updateBranchData('branch${j + 1}Form');"><i class="material-icons left">save</i>Save</a>\n`;
+                        displayString += `\t\t\t\t<a class="waves-effect waves-light btn" onClick="updateBranchData('branch${j + 1}Form');"><i class="material-icons left">save</i>Save</a>\n`;
                         displayString += `\t\t\t\t<a class="waves-effect waves-light btn"><i class="material-icons left">delete</i>Delete</a>\n`;
+                        displayString += `\t\t\t\t<a class="waves-effect waves-light btn" onClick="calculateBranchImpact('${encodeURIComponent(riverName)}', '${encodeURIComponent(branch.branchName)}')"><i class="material-icons left">rate_review</i>Calculate impact</a>\n`;
                     displayString += `\t\t\t</div>\n`;
                 displayString += `\t\t</div>\n`;
                 displayString += `\t\t</div>\n`;
@@ -70,6 +71,16 @@ let updateBranchData = (formName) => {
     console.log(form)
     let formData = new FormData(form)
     console.log(formData.getAll())
+}
+
+let calculateBranchImpact = (riverName, branchName) => {
+    serverRequest('POST', '/calculateBranchImpact', `riverName=${riverName}&branchName=${branchName}`, (xmlhttp) => {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let result = JSON.parse(xmlhttp.responseText)
+            console.log(result)
+            swal(JSON.stringify(result, null, 4))
+        }
+    })
 }
 
 getBranchList('Food');

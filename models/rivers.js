@@ -69,24 +69,53 @@ class Rivers {
     }
 
     calculateN(riverName, branchName) {
-        // let culmulativeFishCount = 0
-        // for (let i = 1; i <= this.riverList[riverName].branches[branchName].sweeps.length; i++) {
-        //     let k = i;
-        //     let t = this.riverList[riverName].branches[branchName].sweeps[i - 1];
-        //     let x = culmulativeFishCount + t
-        //     var populationSize = calculate.nNumber(k, t, x);
-        //     console.log(populationSize)
-        // }
-        // return populationSize
-        let culmulativeFishCount = 0
-        for (let i = 1; i <= this.riverList[riverName].branches[branchName].sweeps.length; i++) {
-            let k = i;
-            let t = this.riverList[riverName].branches[branchName].sweeps[i - 1];
-            let x = culmulativeFishCount + t
-            var populationSize = calculate.nNumber(k, t, x);
-            console.log(populationSize)
+        let population = 0;
+        let x = 0;
+        let k = 0;
+        let p = 0;
+        let t = 0;
+        for (let i = 0; i < this.riverList[riverName].branches[branchName].sweeps.length; i++) {
+            k = i;
+            t = this.riverList[riverName].branches[branchName].sweeps[i];
+            x = x + t
+            p = (-k*3*t*x + k*3*3*x)/(k*3*x*x - 3*3*x*x)
+            console.log('sweep ' + i + ': ' + p)
+            // var populationSize = calculate.nNumber(k, t, x);
+            // console.log(populationSize)
         }
-        return populationSize
+        population = (3*t + p*3*x)/(k*p)
+        console.log('N: ' + population)
+        return population
+    }
+
+    calculateBranchImpact(riverName, branchName) {
+        return new Promise((resolve, reject) => {
+            if (this.riverList[riverName].branches[branchName] == null) {
+                reject ({
+                    "error": "No such river or branch in database"
+                })
+            }
+
+            let branchPopulation = this.calculateN(riverName, branchName);
+            let impactOnRiverPopulation = branchPopulation/this.riverList[riverName].riverPopulation;
+            let connectedBranches = this.riverList[riverName].branches[branchName].connections;
+            let impactOnConnectedBranches = [];
+            for (let i = 0; i < connectedBranches.length; i++) {
+                let connectedBranchPopulation = this.calculateN(riverName, connectedBranches[i]);
+                if (branchPopulation/(branchPopulation + connectedBranchPopulation) < 0.025) {
+                    impactOnConnectedBranches.push(0);
+                } else {
+                    impactOnConnectedBranches.push(connectedBranchPopulation*(branchPopulation/(branchPopulation + connectedBranchPopulation)));
+                }
+                if (i == connectedBranches.length - 1) {
+                    resolve ({
+                        "branchName": branchName,
+                        "impactOnRiverPopulation": impactOnRiverPopulation,
+                        "impactOnConnectedBranches": impactOnConnectedBranches
+                    });
+                }
+            }
+        })
     }
 }
 
