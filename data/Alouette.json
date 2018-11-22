@@ -1,20 +1,27 @@
 {
     "riverName": "Alouette",
+    "riverPopulation": 500000,
     "branches": {
         "North": {
             "branchName": "North",
-            "sweeps": [
-                5,
-                3,
-                3
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [45, 23, 17],
+            "connections": [
+                "South"
             ]
         },
+        "North West": {
+            "branchName": "North West",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [118, 85, 55],
+            "connections": []
+        },
         "South": {
-            "branchName": "North",
-            "sweeps": [
-                5,
-                3,
-                3
+            "branchName": "South",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [254, 123, 87],
+            "connections": [
+                "North"
             ]
         }
     }

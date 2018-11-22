@@ -7,7 +7,9 @@
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
             "sweeps": [50, 20, 10],
             "connections": [
-                "Branch 3"
+                "Branch 3",
+                "Branch 4",
+                "Branch 7"
             ]
         },
         "Branch 2": {
@@ -15,16 +17,79 @@
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
             "sweeps": [45, 10, 20],
             "connections": [
-                "Branch 3"
+                "Branch 3",
+                "Branch 7",
+                "Branch 8"
             ]
         },
         "Branch 3": {
             "branchName": "Branch 3",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
-            "sweeps": [75, 54, 34],
+            "sweeps": [115, 98, 35],
             "connections": [
                 "Branch 1",
-                "Branch 2"
+                "Branch 2",
+                "Branch 5",
+                "Branch 7"
+            ]
+        },
+        "Branch 4": {
+            "branchName": "Branch 4",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [234, 221, 210],
+            "connections": [
+                "Branch 1",
+                "Branch 5"
+            ]
+        },
+        "Branch 5": {
+            "branchName": "Branch 5",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [154, 87, 45],
+            "connections": [
+                "Branch 3",
+                "Branch 4"
+            ]
+        },
+        "Branch 6": {
+            "branchName": "Branch 6",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [178, 154, 112],
+            "connections": []
+        },
+        "Branch 7": {
+            "branchName": "Branch 7",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [54, 32, 11],
+            "connections": [
+                "Branch 1",
+                "Branch 2",
+                "Branch 3",
+                "Branch 10"
+            ]
+        },
+        "Branch 8": {
+            "branchName": "Branch 8",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [8, 7, 2],
+            "connections": [
+                "Branch 2",
+                "Branch 10"
+            ]
+        },
+        "Branch 9": {
+            "branchName": "Branch 9",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [111, 96, 74],
+            "connections": []
+        },
+        "Branch 10": {
+            "branchName": "Branch 10",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [178, 54, 11],
+            "connections": [
+                "Branch 7",
+                "Branch 8"
             ]
         }
     }

@@ -1,17 +1,28 @@
 {
     "riverName": "Fraser River",
+    "riverPopulation": 500000,
     "branches": {
         "Branch 1": {
             "branchName": "Branch 1",
-            "sweeps": [5, 3, 2]
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [254, 232, 117],
+            "connections": []
         },
         "Branch 2": {
             "branchName": "Branch 2",
-            "sweeps": [5, 3, 2]
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [86, 75, 23],
+            "connections": [
+                "Branch 3"
+            ]
         },
         "Branch 3": {
             "branchName": "Branch 3",
-            "sweeps": [5, 3, 2]
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "sweeps": [111, 97, 95],
+            "connections": [
+                "Branch 2"
+            ]
         }
     }
 }

@@ -54,21 +54,6 @@ app.get('/calculateN', (request, response) => {
     })
 });
 
-app.get('/getBranchList', (request, response) => {
-    let riverName = request.query.riverName;
-    let riverList = new rivers.Rivers();
-    riverList.loadFromDirectory('./data').then((result) => {
-        if (riverName in riverList.riverList) {
-            currentRiver = {
-                'riverName': riverName,
-                'riverInformation': riverList.riverList[riverName]
-            }
-            response.send(JSON.stringify(currentRiver))
-        }
-        else response.sendStatus(200)
-    })
-})
-
 app.get('*', function(request, response){
     response.render('404.hbs');
 });
@@ -91,8 +76,8 @@ app.post('/getBranchList', (request, response) => {
 app.post('/getRiverList', (request, response) => {
     let riverList = new rivers.Rivers()
     riverList.loadFromDirectory('./data').then((result) => {
-        let displayString = riverList.displayRiverList();
-        response.send(displayString)
+        let riverArray = riverList.getRiverList();
+        response.send(riverArray)
     })
 })
 

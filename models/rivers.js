@@ -32,16 +32,8 @@ class Rivers {
         })
     }
 
-    displayRiverList() {
-        let displayString = '';
-        Object.keys(this.riverList).forEach(river => {
-            displayString += '<div class="card blue-grey darken-1">\n'
-            displayString += '<div class="card-content white-text" style="padding: 1em">\n'
-            displayString += `<p class="text-flow" style="font-size: 1.25em"> ${this.riverList[river].riverName} </p>\n`
-            displayString += '</div>\n'
-            displayString += '</div>\n'
-        })
-        return displayString;
+    getRiverList() {
+        return Object.keys(this.riverList);
     }
 
     saveRiverToFile(riverName, data) {
@@ -79,12 +71,12 @@ class Rivers {
             t = this.riverList[riverName].branches[branchName].sweeps[i];
             x = x + t
             p = (-k*3*t*x + k*3*3*x)/(k*3*x*x - 3*3*x*x)
-            console.log('sweep ' + i + ': ' + p)
+            // console.log('sweep ' + i + ': ' + p)
             // var populationSize = calculate.nNumber(k, t, x);
             // console.log(populationSize)
         }
         population = (3*t + p*3*x)/(k*p)
-        console.log('N: ' + population)
+        // console.log('N: ' + population)
         return population
     }
 
@@ -95,22 +87,32 @@ class Rivers {
                     "error": "No such river or branch in database"
                 })
             }
-
             let branchPopulation = this.calculateN(riverName, branchName);
             let impactOnRiverPopulation = branchPopulation/this.riverList[riverName].riverPopulation;
             let connectedBranches = this.riverList[riverName].branches[branchName].connections;
-            let impactOnConnectedBranches = [];
+            let impactOnConnectedBranches = {};
+            if (connectedBranches.length == 0) {
+                resolve ({
+                    "riverName": riverName,
+                    "branchName": branchName,
+                    "lostBranchPopulation": branchPopulation,
+                    "impactOnRiverPopulation": (impactOnRiverPopulation*100).toPrecision(4) + '%',
+                    "impactOnConnectedBranches": impactOnConnectedBranches
+                });
+            }
             for (let i = 0; i < connectedBranches.length; i++) {
                 let connectedBranchPopulation = this.calculateN(riverName, connectedBranches[i]);
                 if (branchPopulation/(branchPopulation + connectedBranchPopulation) < 0.025) {
                     impactOnConnectedBranches.push(0);
                 } else {
-                    impactOnConnectedBranches.push(connectedBranchPopulation*(branchPopulation/(branchPopulation + connectedBranchPopulation)));
+                    impactOnConnectedBranches[connectedBranches[i]] = connectedBranchPopulation*(branchPopulation/(branchPopulation + connectedBranchPopulation));
                 }
                 if (i == connectedBranches.length - 1) {
                     resolve ({
+                        "riverName": riverName,
                         "branchName": branchName,
-                        "impactOnRiverPopulation": impactOnRiverPopulation,
+                        "lostBranchPopulation": branchPopulation,
+                        "impactOnRiverPopulation": (impactOnRiverPopulation*100).toPrecision(4) + '%',
                         "impactOnConnectedBranches": impactOnConnectedBranches
                     });
                 }
