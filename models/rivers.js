@@ -139,9 +139,9 @@ class Rivers {
                 this.calculateBranchImpact(riverName,branchName).then((result) => {
                     // console.log(JSON.stringify(result));
                     cumulativeImpactOnRiver+=result.impactOnRiverPopulation;                              
-                    // console.log("Cumulative Impact in percents: ", cumulativeImpactOnRiver);
+                    console.log("Cumulative Impact in percents: ", cumulativeImpactOnRiver);
                     cumulativeImpactOnBranches+=result.lostBranchPopulation
-                    // console.log("Cumulative Impact in fish number: ", cumulativeImpactOnBranches);
+                    console.log("Cumulative Impact in fish number: ", cumulativeImpactOnBranches);
                     if (Object.keys(riverBranches).indexOf(branch) == (Object.keys(riverBranches).length - 1)) {
                         resolve({
                             'cumulativeImpactOnRiver': cumulativeImpactOnRiver,

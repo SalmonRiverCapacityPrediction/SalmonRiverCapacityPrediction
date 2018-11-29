@@ -1,6 +1,8 @@
 {
     "riverName": "Alouette",
     "riverPopulation": 500000,
+    "D50": 64,
+    "DT": 94,
     "branches": {
         "North": {
             "branchName": "North",
