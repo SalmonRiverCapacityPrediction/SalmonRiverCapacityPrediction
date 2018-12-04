@@ -1,0 +1,37 @@
+{
+    "riverList": {
+        "River 1": {
+            "riverName": "River 1",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "riverPopulation": 25,
+            "fishLength": 500,
+            "D50": 64,
+            "D84": 111,
+            "DT": 94,
+            "sweeps": [254, 232, 117],
+            "connections": ["River 2", "River 3"]
+        },
+        "River 2": {
+            "riverName": "River 2",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "riverPopulation": 25,
+            "fishLength": 600,
+            "D50": 64,
+            "D84": 111,
+            "DT": 94,
+            "sweeps": [86, 75, 23],
+            "connections": ["River 1"]
+        },
+        "River 3": {
+            "riverName": "River 3",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate quam quis nunc ornare lacinia. Praesent iaculis laoreet gravida. Sed augue diam, dictum id quam sed, porttitor vulputate turpis. Pellentesque semper faucibus neque. Vestibulum posuere nibh non enim blandit, quis eleifend quam pharetra. Donec vel eleifend tortor. Quisque elementum lectus vel vestibulum venenatis. Suspendisse arcu urna, tempor at est a, placerat lobortis arcu.",
+            "riverPopulation": 25,
+            "fishLength": 700,
+            "D50": 64,
+            "D84": 111,
+            "DT": 94,
+            "sweeps": [111, 97, 95],
+            "connections": ["River 1"]
+        }
+    }
+}
