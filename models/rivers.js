@@ -3,7 +3,10 @@ const calculate = require('../controllers/calculation');
 
 class Rivers {
     constructor() {
-        this.riverList = {}
+        this.riverList = {};
+        this.eggPerFemale = 3000;
+        this.marineSalmonSurvivingRate = 0.1;
+        this.closedRiverList = [];
     }
 
     loadFromFile(filePath) {
@@ -82,83 +85,127 @@ class Rivers {
     }
 
     calculateSmoltsSurvivingRate(){ //Add the number of smolts, and E, and C. They are constants for demo purpose
-        var E = 0.946;
-        var C = 20;
-        var smoltSurvivingRate = 0.1361*(Math.log(C)/Math.log(Math.E))+0.487+E;
+        var E = 0.48;
+        var W = 20 //channel width
+        var G = 2//gradient (slope) of the river in percent
+        var B = 0.1 //biver damns per km
+        var L = 0.02// arc sine square root transformation of the percent of pool in the reach
+        var C = (0.4 - 0.0682*Math.log(W) - 0.0330*G + 0.1030*B + 0.2020*L)^2//smolt density
+        var smoltSurvivingRate = 0.1361*(Math.log(C))+0.487;
         console.log("smoltSurvivingRate is: ",smoltSurvivingRate);
         return smoltSurvivingRate;
     }
 
+    riverIsClosed (riverName) {
+        if (this.closedRiverList.indexOf(riverName) >= 0) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     calculateRiverImpact(riverName) {
         return new Promise((resolve, reject) => {
+            if (!this.riverIsClosed(riverName)) {
+                this.closedRiverList.push(this.riverName)
+            }
 
-            let result = {
-                currentFishPopulation: 0,
-                impactOnConnectedRivers: {}
-            };
+            let result = Object.assign({}, this.riverList);
 
             if (this.riverList[riverName] == null) {
                 reject ({
                     "error": "No such river or branch in database"
                 })
             }
+            if (this.riverIsClosed(riverName)) {
+                reject ({
+                    "error": "River already closed"
+                })
+            }
 
-            let riverPopulation = this.calculateN(riverName);
+            result[riverName].riverPopulation = 0;
+
             let connectedRivers = this.riverList[riverName].connections;
-            let impactOnConnectedBranches = {};
-            console.log(this.riverList[riverName])
 
-            let eggIncreaseFromClosingRiverToConnectedRivers = ((riverPopulation/3)*3000)/this.riverList[riverName].connections.length;
-
+            let eggIncreaseFromClosingRiverToConnectedRivers = ((result[riverName].riverPopulation/3)*this.eggPerFemale)/this.riverList[riverName].connections.length;
             connectedRivers.forEach(connectedRiverName => {
-                let connectedRiver = this.riverList[connectedRiverName];
-                let numberOfReeds = this.calculateNRedds(connectedRiver);
-                let eggLimit = numberOfReeds * 3000; //3000 is eggs number
-                let actualEggNumber = (connectedRiver.riverPopulation/3)*3000;
-                
-                let totalNumberOfEggs = actualEggNumber + eggIncreaseFromClosingRiverToConnectedRivers;
-                console.log(totalNumberOfEggs, eggLimit)
-                let numberOfLostParrs = this.calculateParrSurvivingNumber(totalNumberOfEggs, eggLimit)
-                let numberOfLostSmolts = numberOfLostParrs*this.calculateSmoltsSurvivingRate();
+                if (!this.riverIsClosed(riverName)) {
+                    let connectedRiver = this.riverList[connectedRiverName];
 
-                result.impactOnConnectedRivers[connectedRiver.riverName] = numberOfLostSmolts;
+                    // Calculate the egg limit this river can contain:
+                    let numberOfReeds = this.calculateNRedds(connectedRiver);
+                    let eggLimit = numberOfReeds * this.eggPerFemale; //3000 is eggs number
+                    
+                    // Calculate number of eggs flushed to the connected river:
+                    let actualEggNumber = (connectedRiver.riverPopulation/3)*this.eggPerFemale;
+                    let totalNumberOfEggs = actualEggNumber + eggIncreaseFromClosingRiverToConnectedRivers;
+                    let numberOfParrs = this.calculateParrSurvivingNumber(totalNumberOfEggs, eggLimit)
+                    let numberOfSmolts = numberOfParrs*this.calculateSmoltsSurvivingRate();
 
-                if(Object.keys(result.impactOnConnectedRivers).length == connectedRivers.length) {
-                    resolve(result)
+                    let marineSalmonSurvivingRate = 0.10 //according to the http://library.state.or.us/repository/2011/201108261007475/index.pdf
+                    let numberofAdultSalmon = marineSalmonSurvivingRate * numberOfSmolts;
+
+                    result[connectedRiver.riverName].riverPopulation = numberofAdultSalmon;
                 }
             })
-
-
-            
-
-            // if (connectedBranches.length == 0) {
-            //     resolve ({
-            //         "riverName": riverName,
-            //         "branchName": branchName,
-            //         "lostBranchPopulation": branchPopulation,
-            //         "impactOnRiverPopulation": impactOnRiverPopulation*100,
-            //         "impactOnConnectedBranches": impactOnConnectedBranches
-            //     });
-            // }
-            // for (let i = 0; i < connectedBranches.length; i++) {
-            //     let connectedBranchPopulation = this.calculateN(connectedBranches[i]);
-            //     if (branchPopulation/(branchPopulation + connectedBranchPopulation) < 0.025) {
-            //         impactOnConnectedBranches[connectedBranches[i]] = 0;
-            //     } else {
-            //         impactOnConnectedBranches[connectedBranches[i]] = connectedBranchPopulation*(branchPopulation/(branchPopulation + connectedBranchPopulation));
-            //     }
-            //     if (i == connectedBranches.length - 1) {
-            //         resolve ({
-            //             "riverName": riverName,
-            //             "branchName": branchName,
-            //             "lostBranchPopulation": branchPopulation,
-            //             "impactOnRiverPopulation": impactOnRiverPopulation*100,
-            //             "impactOnConnectedBranches": impactOnConnectedBranches
-            //         });
-            //     }
-            // }
+            resolve(result)
         })
     }
+
+    calculateMultipleRiversImpact (riverList) {
+        return new Promise((resolve, reject) => {
+            riverList.forEach(riverName => {
+                this.calculateRiverImpact(riverName).then(result => {
+                    this.riverList = Object.assign({}, result)
+                }).catch((error) => {
+                    console.log(error)
+                })
+            })
+            resolve(this.riverList)
+        })
+    }
+
+
+    // calculateImpactByClosingMultipleRivers (riverName) {        
+    //     return new Promise((resolve, reject) => {
+    //         let cumulativeImpactOnRiver = 0;
+    //         let cumulativeImpactOnBranches = 0;
+    //         let nRedds = this.calculateNRedds(600,64,84);
+    //         let eggsNumber = nRedds * 3000; //3000 is eggs number
+    //         let nParrs = this.calculateParrSurvivingNumber(eggsNumber*5,eggsNumber); //1st arg: layed eggs; 2nd ard: need to survive
+    //         let smoltsNumber = nParrs*this.calculateSmoltsSurvivingRate();
+    //         console.log(smoltsNumber);
+    //         let mortalityRate = 0.12 //according to the http://www.fraserriverkeeper.ca/600000_farmed_salmon_die_of_disease_in_bc_annually
+    //         let marineSalmonSurvivingRate = 0.10 //according to the http://library.state.or.us/repository/2011/201108261007475/index.pdf
+    //         let adultSalmonNumber = marineSalmonSurvivingRate * smoltsNumber;
+    //         console.log(adultSalmonNumber);
+    //         if (this.riverList[riverName] == null) {
+    //             reject ({
+    //                 "error": "No such river or branch in database"
+    //             })
+    //         }        
+
+    //         let riverBranches = this.riverList[riverName].branches;
+    //         Object.keys(riverBranches).forEach(branch => {            
+    //             let branchName = riverBranches[branch].branchName;
+    //             this.calculateBranchImpact(riverName,branchName).then((result) => {
+    //                 cumulativeImpactOnRiver+=result.impactOnRiverPopulation;
+    //                 cumulativeImpactOnBranches+=result.lostBranchPopulation
+    //                 if (Object.keys(riverBranches).indexOf(branch) == (Object.keys(riverBranches).length - 1)) {
+    //                     resolve({
+    //                         'cumulativeImpactOnRiver': cumulativeImpactOnRiver,
+    //                         'cumulativeImpactOnBranches': cumulativeImpactOnBranches,
+    //                         "nRedds": nRedds,
+    //                         "smoltsNumber": smoltsNumber,
+    //                         "adultSalmonNumber": adultSalmonNumber
+    //                     })
+    //                 }
+    //                 }).catch((error) => {
+    //                     console.log(error)
+    //                 })
+    //             })
+    //     })
+    // }
 
 
     // calculateCumulativeRiverImpact (riverName) {        

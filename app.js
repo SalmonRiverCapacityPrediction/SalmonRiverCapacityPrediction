@@ -43,14 +43,31 @@ app.get('/about', (request, response) => {
     response.render('about.hbs');
 });
 
-app.get('/calculateN', (request, response) => {
+app.get('/calculateRiverImpact', (request, response) => {
+    let riverName = decodeURIComponent(request.query.river);
+    let riverList = new rivers.Rivers()
+    console.log(riverName)
+    riverList.loadFromFile('./data/Rivers.json').then((result) => {
+        riverList.calculateRiverImpact(riverName).then((result) => {
+            response.send(JSON.stringify(result))
+        }).catch((error) => {
+            console.log(error)
+        })
+    })
+})
+
+app.get('/calculateMultipleRiversImpact', (request, response) => {
+    let riverListToBeCalculated = request.query.river;
+    console.log(riverListToBeCalculated)
     let riverList = new rivers.Rivers()
     riverList.loadFromFile('./data/Rivers.json').then((result) => {
-        console.log(result)
-        let n = riverList.calculateN('River 1');
-        response.send(n.toString())
+        riverList.calculateMultipleRiversImpact(riverListToBeCalculated).then((result) => {
+            response.send(JSON.stringify(result))
+        }).catch((error) => {
+            console.log(error)
+        })
     })
-});
+})
 
 app.get('*', function(request, response){
     response.render('404.hbs');
@@ -75,11 +92,6 @@ app.post('/getRiverList', (request, response) => {
     })
 })
 
-app.post('/updateBranchData', (request, response) => {
-    console.log(request.body)
-    response.send(200)
-})
-
 app.post('/calculateRiverImpact', (request, response) => {
     let riverName = decodeURIComponent(request.body.riverName);
     let riverList = new rivers.Rivers()
@@ -90,34 +102,33 @@ app.post('/calculateRiverImpact', (request, response) => {
         }).catch((error) => {
             console.log(error)
         })
-        riverList.calculateImpactByClosingMultipleRivers(riverName).then((result) => {
-            console.log(result)
-        });
     })
 
 })
 
-app.post('/saveRiver', (request, response) => {
-    //Save data as JSON object. Populate the branches.
-    //Readfile first, add data then.
-    //Convert branches to array
-    var newData = {
-            "riverName" : request.body.riverName,
-            "riverPopulation": null,
-            "branches" : {}
-    };
-    newData["branches"][request.body.streamName] = {
-        branchName: request.body.streamName,
-        "sweeps": [5, 3, 3]
-    }
+// app.post('/updateBranchData', (request, response) => {
+//     console.log(request.body)
+//     response.send(200)
+// })
 
-    let riverList = new rivers.Rivers();
-    riverList.loadFromDirectory('./data').then((result) => {
-        riverList.saveRiverToFile(request.body.riverName, newData)
-        response.render('index.hbs')
-    })
+// app.post('/saveRiver', (request, response) => {
+//     var newData = {
+//             "riverName" : request.body.riverName,
+//             "riverPopulation": null,
+//             "branches" : {}
+//     };
+//     newData["branches"][request.body.streamName] = {
+//         branchName: request.body.streamName,
+//         "sweeps": [5, 3, 3]
+//     }
+
+//     let riverList = new rivers.Rivers();
+//     riverList.loadFromDirectory('./data').then((result) => {
+//         riverList.saveRiverToFile(request.body.riverName, newData)
+//         response.render('index.hbs')
+//     })
     
-});
+// });
 
 app.listen(port, () => {
     console.log(`Server is up on port 8080`);
