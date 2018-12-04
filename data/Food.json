@@ -1,6 +1,8 @@
 {
     "riverName": "Food",
     "riverPopulation": 1000000,
+    "D50": 64,
+    "DT": 94,
     "branches": {
         "Branch 1": {
             "branchName": "Branch 1",
