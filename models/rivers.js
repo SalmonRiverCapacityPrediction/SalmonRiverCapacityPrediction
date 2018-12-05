@@ -107,7 +107,7 @@ class Rivers {
     calculateRiverImpact(riverName) {
         return new Promise((resolve, reject) => {
             if (!this.riverIsClosed(riverName)) {
-                this.closedRiverList.push(this.riverName)
+                this.closedRiverList.push(riverName)
             }
 
             let result = Object.assign({}, this.riverList);
@@ -117,11 +117,6 @@ class Rivers {
                     "error": "No such river or branch in database"
                 })
             }
-            if (this.riverIsClosed(riverName)) {
-                reject ({
-                    "error": "River already closed"
-                })
-            }
 
             result[riverName].riverPopulation = 0;
 
@@ -129,7 +124,8 @@ class Rivers {
 
             let eggIncreaseFromClosingRiverToConnectedRivers = ((result[riverName].riverPopulation/3)*this.eggPerFemale)/this.riverList[riverName].connections.length;
             connectedRivers.forEach(connectedRiverName => {
-                if (!this.riverIsClosed(riverName)) {
+                console.log(this.riverIsClosed(connectedRiverName), this.closedRiverList)
+                if (!this.riverIsClosed(connectedRiverName)) {
                     let connectedRiver = this.riverList[connectedRiverName];
 
                     // Calculate the egg limit this river can contain:
