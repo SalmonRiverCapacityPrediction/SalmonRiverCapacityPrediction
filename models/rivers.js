@@ -5,7 +5,8 @@ class Rivers {
     constructor() {
         this.riverList = {};
         this.eggPerFemale = 3000;
-        this.marineSalmonSurvivingRate = 0.1;
+        this.marineSalmonSurvivingRate = 0.1; //according to the http://library.state.or.us/repository/2011/201108261007475/index.pdf
+
         this.closedRiverList = [];
     }
 
@@ -84,9 +85,9 @@ class Rivers {
         return parrSurvivedNumber;
     }
 
-    calculateSmoltsSurvivingRate(){ //Add the number of smolts, and E, and C. They are constants for demo purpose
+    calculateSmoltsSurvivingRate(riverName){ //Add the number of smolts, and E, and C. They are constants for demo purpose
         var E = 0.48;
-        var W = 20 //channel width
+        var W = parseFloat(this.riverList[riverName].width) //channel width in teh active spot
         var G = 2//gradient (slope) of the river in percent
         var B = 0.1 //biver damns per km
         var L = 0.02// arc sine square root transformation of the percent of pool in the reach
@@ -118,12 +119,17 @@ class Rivers {
                 })
             }
 
-            result[riverName].riverPopulation = 0;
+            //result[riverName].riverPopulation = 0;
 
             let connectedRivers = this.riverList[riverName].connections;
+            let totalPopulation = this.riverList[riverName].riverPopulation;
+            let fishLost = 0;
 
             let eggIncreaseFromClosingRiverToConnectedRivers = ((result[riverName].riverPopulation/3)*this.eggPerFemale)/this.riverList[riverName].connections.length;
             connectedRivers.forEach(connectedRiverName => {
+                totalPopulation+=this.riverList[riverName].riverPopulation
+                console.log("totalPopulation is: ", totalPopulation);
+                result[riverName].riverPopulation = 0;
                 console.log(this.riverIsClosed(connectedRiverName), this.closedRiverList)
                 if (!this.riverIsClosed(connectedRiverName)) {
                     let connectedRiver = this.riverList[connectedRiverName];
@@ -135,15 +141,20 @@ class Rivers {
                     // Calculate number of eggs flushed to the connected river:
                     let actualEggNumber = (connectedRiver.riverPopulation/3)*this.eggPerFemale;
                     let totalNumberOfEggs = actualEggNumber + eggIncreaseFromClosingRiverToConnectedRivers;
+
+                    //Calcilate parrs, smolts, and adult salmon
                     let numberOfParrs = this.calculateParrSurvivingNumber(totalNumberOfEggs, eggLimit)
-                    let numberOfSmolts = numberOfParrs*this.calculateSmoltsSurvivingRate();
+                    let numberOfSmolts = numberOfParrs*this.calculateSmoltsSurvivingRate(riverName);
+                    let numberOfAdultSalmon = this.marineSalmonSurvivingRate * numberOfSmolts;
 
-                    let marineSalmonSurvivingRate = 0.10 //according to the http://library.state.or.us/repository/2011/201108261007475/index.pdf
-                    let numberofAdultSalmon = marineSalmonSurvivingRate * numberOfSmolts;
-
-                    result[connectedRiver.riverName].riverPopulation = numberofAdultSalmon;
-                }
+                    fishLost+=numberOfAdultSalmon;
+                    //console.log("Lost potential adult salmon for ",connectedRiverName,"is: ",fishLost);
+                    result[connectedRiver.riverName].riverPopulation = numberOfAdultSalmon;
+                }                
             })
+            let totalPopulationAfterFishLost=totalPopulation - fishLost;
+            this.riverList[riverName].riverPopulation = totalPopulation;
+            console.log("Total poulation after stream closed is: ",totalPopulationAfterFishLost);
             resolve(result)
         })
     }
