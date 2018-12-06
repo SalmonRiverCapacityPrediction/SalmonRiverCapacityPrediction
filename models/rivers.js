@@ -88,9 +88,9 @@ class Rivers {
     calculateSmoltsSurvivingRate(riverName){ //Add the number of smolts, and E, and C. They are constants for demo purpose
         var E = 0.48;
         var W = parseFloat(this.riverList[riverName].width) //channel width in teh active spot
-        var G = 2//gradient (slope) of the river in percent
-        var B = 0.1 //biver damns per km
-        var L = 0.02// arc sine square root transformation of the percent of pool in the reach
+        var G = parseFloat(this.riverList[riverName].gradient)//gradient (slope) of the river in percent
+        var B = parseFloat(this.riverList[riverName].beaverDams) //biver damns per km
+        var L = parseFloat(this.riverList[riverName].L)// arc sine square root transformation of the percent of pool in the reach
         var C = (0.4 - 0.0682*Math.log(W) - 0.0330*G + 0.1030*B + 0.2020*L)^2//smolt density
         var smoltSurvivingRate = 0.1361*(Math.log(C))+0.487;
         console.log("smoltSurvivingRate is: ",smoltSurvivingRate);
