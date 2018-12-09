@@ -67,14 +67,16 @@ class Rivers {
         let D50 = river.D50;
         let D84 = river.D84
         nRedds = 100*Math.pow((3.3*Math.pow((L/600),2.3))*1+Math.pow(Math.E,-1.702*((Math.log(115)/Math.log(10)+0.62*Math.log(L/600)/Math.log(10)-Math.log(D50)/Math.log(10))/(Math.log(D84)/Math.log(10)/Math.log(D50)/Math.log(10)))),-1)
+        nRedds = nRedds*river.length/2000
         console.log('Redd Number: ' + nRedds)
         return nRedds;
     }
 
-    calculateParrSurvivingNumber(numberOfEggs,numberOfEggsToSurvive){ //Add E, const for demo purpose
+    calculateParrSurvivingNumber(numberOfEggs,riverName){ //Add E, const for demo purpose
         var E = 0.946;
         var D = numberOfEggs;
-        var Dm = numberOfEggsToSurvive; //increase and get worse results
+        var Dm = riverName.length*riverName.channelWidth/0.072*0.03
+        //var Dm = numberOfEggsToSurvive; //increase and get worse results
         var P = D/Dm;
         console.log("P is: ",P);
         var eggToParrSurvivingRate = 0.079*Math.pow(P,-0.699)*Math.pow(Math.E,E);
@@ -87,10 +89,10 @@ class Rivers {
 
     calculateSmoltsSurvivingRate(riverName){ //Add the number of smolts, and E, and C. They are constants for demo purpose
         var E = 0.48;
-        var W = parseFloat(this.riverList[riverName].width) //channel width in teh active spot
-        var G = parseFloat(this.riverList[riverName].gradient)//gradient (slope) of the river in percent
-        var B = parseFloat(this.riverList[riverName].beaverDams) //biver damns per km
-        var L = parseFloat(this.riverList[riverName].L)// arc sine square root transformation of the percent of pool in the reach
+        var W = parseFloat(riverName.channelWidth) //channel width in teh active spot
+        var G = parseFloat(riverName.gradient)//gradient (slope) of the river in percent
+        var B = parseFloat(riverName.beaverDams) //biver damns per km
+        var L = parseFloat(riverName.L)// arc sine square root transformation of the percent of pool in the reach
         var C = (0.4 - 0.0682*Math.log(W) - 0.0330*G + 0.1030*B + 0.2020*L)^2//smolt density
         var smoltSurvivingRate = 0.1361*(Math.log(C))+0.487;
         console.log("smoltSurvivingRate is: ",smoltSurvivingRate);
@@ -119,7 +121,7 @@ class Rivers {
                 })
             }
 
-            //result[riverName].riverPopulation = 0;
+            result[riverName].riverPopulation = 0;
 
             let connectedRivers = this.riverList[riverName].connections;
             let totalPopulation = this.riverList[riverName].riverPopulation;
@@ -133,7 +135,7 @@ class Rivers {
                 console.log(this.riverIsClosed(connectedRiverName), this.closedRiverList)
                 if (!this.riverIsClosed(connectedRiverName)) {
                     let connectedRiver = this.riverList[connectedRiverName];
-
+                    console.log("connectedRiver is: ", connectedRiver.riverName);
                     // Calculate the egg limit this river can contain:
                     let numberOfReeds = this.calculateNRedds(connectedRiver);
                     let eggLimit = numberOfReeds * this.eggPerFemale; //3000 is eggs number
@@ -143,18 +145,21 @@ class Rivers {
                     let totalNumberOfEggs = actualEggNumber + eggIncreaseFromClosingRiverToConnectedRivers;
 
                     //Calcilate parrs, smolts, and adult salmon
-                    let numberOfParrs = this.calculateParrSurvivingNumber(totalNumberOfEggs, eggLimit)
-                    let numberOfSmolts = numberOfParrs*this.calculateSmoltsSurvivingRate(riverName);
+                    let numberOfParrs = this.calculateParrSurvivingNumber(totalNumberOfEggs, connectedRiver)
+                    let numberOfSmolts = numberOfParrs*this.calculateSmoltsSurvivingRate(connectedRiver);
+                    console.log("numberOfSmolts is: ", numberOfSmolts);
                     let numberOfAdultSalmon = this.marineSalmonSurvivingRate * numberOfSmolts;
-
-                    fishLost+=numberOfAdultSalmon;
+                    console.log("numberOfAdultSalmon is: ", numberOfAdultSalmon);
+                    let numberOfAdultSalmonReadyToSpawn = numberOfAdultSalmon/2;
+                    console.log("numberOfAdultSalmonReadyToSpawn is: ", numberOfAdultSalmonReadyToSpawn);
+                    //fishLost+=numberOfAdultSalmon;
                     //console.log("Lost potential adult salmon for ",connectedRiverName,"is: ",fishLost);
                     result[connectedRiver.riverName].riverPopulation = numberOfAdultSalmon;
                 }                
             })
             let totalPopulationAfterFishLost=totalPopulation - fishLost;
             this.riverList[riverName].riverPopulation = totalPopulation;
-            console.log("Total poulation after stream closed is: ",totalPopulationAfterFishLost);
+            //console.log("fishLost: ",fishLost);
             resolve(result)
         })
     }
