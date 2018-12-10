@@ -73,12 +73,13 @@ class Rivers {
         return nRedds;
     }
 
-    calculateParrSurvivingNumber(numberOfEggs,riverName){ //Add E, const for demo purpose
+    calculateParrSurvivingNumber(numberOfEggs, eggLimit){ //Add E, const for demo purpose
         var E = 0.946;
         var D = numberOfEggs;
-        var Dm = riverName.length*riverName.channelWidth/0.072*0.03
+        var Dm = eggLimit
         //var Dm = numberOfEggsToSurvive; //increase and get worse results
         var P = D/Dm;
+        console.log(D, Dm)
         console.log("P is: ",P);
         var eggToParrSurvivingRate = 0.079*Math.pow(P,-0.699)*Math.pow(Math.E,E);
         var parrSurvivedNumber = D*eggToParrSurvivingRate;
@@ -116,17 +117,18 @@ class Rivers {
         }
     }
 
-    calculateSurvivingAdultSalmon (riverName, eggIncrease = 0) {
+    calculateSurvivingAdultSalmon (river, eggIncrease = 0) {
         // Calculate the egg limit this river can contain:
-        let numberOfReeds = this.calculateNRedds(riverName);
+        let numberOfReeds = this.calculateNRedds(river);
         
         // Calculate number of eggs flushed to the connected river:
-        let actualEggNumber = numberOfReeds*this.eggPerFemale;
+        let eggLimit = numberOfReeds*this.eggPerFemale;
+        let actualEggNumber = (river.riverPopulation/2)*this.eggPerFemale;
         let totalNumberOfEggs = actualEggNumber + eggIncrease;
 
         //Calculate parrs, smolts, and adult salmon
-        let numberOfParrs = this.calculateParrSurvivingNumber(totalNumberOfEggs, riverName)
-        let numberOfSmolts = numberOfParrs*this.calculateSmoltsSurvivingRate(riverName);
+        let numberOfParrs = this.calculateParrSurvivingNumber(totalNumberOfEggs, eggLimit)
+        let numberOfSmolts = numberOfParrs*this.calculateSmoltsSurvivingRate(river);
         console.log("numberOfSmolts is: ", numberOfSmolts);
         let numberOfAdultSalmon = this.marineSalmonSurvivingRate * numberOfSmolts;
         console.log("numberOfAdultSalmon is: ", numberOfAdultSalmon);
@@ -213,15 +215,19 @@ class Rivers {
     } 
 
     calculateMultipleRiversImpact (riverList) {
-        return new Promise((resolve, reject) => {
-            riverList.forEach(riverName => {
-                this.calculateRiverImpact(riverName).then(result => {
-                    this.riverList = Object.assign({}, result)
+        return new Promise(async (resolve, reject) => {
+            for (let i = 0; i < riverList.length; i++) {
+                console.log(this.evaluatedRiverList)
+                let result = await this.calculateRiverImpact(riverList[i]).then(result => {
+                    this.evaluatedRiverList = []
+                    console.log(this.evaluatedRiverList, i)
+                    if (i == riverList.length - 1) {
+                        resolve(this.riverList)
+                    }
                 }).catch((error) => {
                     console.log(error)
                 })
-            })
-            resolve(this.riverList)
+            }
         })
     }
 
